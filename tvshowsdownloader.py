@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 __author__ = "J. Martin"
-__license__ = """"""
+__license__ = """GPL v3. See LICENCE for full text."""
 
 import feedparser
 import re
