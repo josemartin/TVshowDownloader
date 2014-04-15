@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 __author__ = "J. Martin"
-__license__ = """GPL v3. See LICENCE for full text."""
+__license__ = """GPL v3. See LICENCE for full text.
+Includes software parts by XBMC team, and feedparser, check respective files for licence details"""
 
 import feedparser
 import re
@@ -15,7 +16,7 @@ logfile = "tvshowlog.txt"
 subfile = "subpen.txt"
 
 
-os.chdir ("/home/pi/tvshowsdownloader/")
+#os.chdir ("/home/pi/tvshowsdownloader/")
 
 
 subfileo = open(subfile)
@@ -128,16 +129,16 @@ writeToLog("Checking for subtitles...",0)
 
 #print subpending
 for entry in subpending:
-	import service
+	import subService
 	writeToLog( "Looking for sub to " + entry[0] + " " + str(entry[1]).zfill(2) + "x" + str(entry[2]).zfill(2),1)
-	a=service.search_subtitles("", "", entry[0],"",str(entry[1]),str(entry[2]),"","","Spanish","","","")
+	a=subService.search_subtitles("", "", entry[0],"",str(entry[1]),str(entry[2]),"","","Spanish","","","")
 	if len(a[0]) > 0:
 		flag = 0
 		for i in range(len(a[0])):
 			tipo = re.compile( "\((.*)\)" ).search( str(a[0][i]["filename"]) ).group( 1 )
 			#print "Tipo: " + tipo
 			if tipo == "ESPAÑA":
-				service.download_subtitles(a[0],i,None,"/storage/USB/Descargas/Subtitles",None,None)
+				subService.download_subtitles(a[0],i,None,"/storage/USB/Descargas/Subtitles",None,None)
 				flag = 1
 		if flag == 1:
 			writeToLog( "Found, removing...",2)
