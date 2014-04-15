@@ -49,15 +49,16 @@ class Subtitles:
         The file shoud contain a chapter by line with the format show,season,chapter
 
         '''
-        subfile = open(self.filename)
-        while True:
-			line = subfile.readline()
-			if not line:
-				break
-				
-			parts = line.split(',')
-			self.subpending.append([parts[0], int(parts[1]), int(parts[2])])
-        subfile.close()
+        if os.path.isfile(self.filename):
+            subfile = open(self.filename)
+            while True:
+    			line = subfile.readline()
+    			if not line:
+    				break
+    				
+    			parts = line.split(',')
+    			self.subpending.append([parts[0], int(parts[1]), int(parts[2])])
+            subfile.close()
     def writePendingSubs (self):
     	'''
     	Writes the pending sub to the supplied filename.
