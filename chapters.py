@@ -15,34 +15,20 @@ import feedparser
 
 import ConfigParser
 
-#-------------------------------------------------------------------
-def sendNotification (text):
-    os.system("echo \"" + text + "\" | /usr/bin/sendxmpp -t -u ceoserverpi -o gmail.com jose.martin.burgos")
-#-------------------------------------------------------------------
-def writeToLog (text, level):
-    f = open ("logfile", "a")
-    
-    a=""
-    
-    for i in range(level):
-        a = a + "-"
-    
-    print >> f, a + text
-    print  a + text
-    f.close()
-#-------------------------------------------------------------------
+from Comm import notify
 
 class Chapters:
     '''
     Handlles the chapters part of TVshowDownloader
     '''
-    def __init__(self, showFile, subtitler):
+    def __init__(self, showFile, subtitler, log):
         '''
         Stores the shows file and
         '''
         self.showFile = showFile
         self.configFile = ConfigParser.ConfigParser()
         self.subtitler = subtitler
+        self.log = log
     def loadShows (self):
     	# Read show file
     	self.configFile.read(self.showFile)
@@ -50,8 +36,8 @@ class Chapters:
     def checkShows (self):
     	for show in self.configFile.sections():
     	
-    		writeToLog(show,1)
-    		writeToLog( "Downloading RSS file...",2)
+    		self.log.write(show,1)
+    		self.log.write( "Downloading RSS file...",2)
 
     		showrssUrl = self.configFile.get(show, "rss")
     	
@@ -63,12 +49,12 @@ class Chapters:
     		# Try to download the RSS correctly
     		counter = 1
     		while feed["bozo"] == 1:
-    			#writeToLog("Failed, retrying...")
+    			#self.log.write("Failed, retrying...")
     			feed = None
     			feed = feedparser.parse( showrssUrl )
     			counter +=1
     			if counter == 11:
-    				writeToLog("Cannot download RSS",2)
+    				self.log.write("Cannot download RSS",2)
     				break
 
     		# Get chapter entries from the RSS
@@ -93,7 +79,7 @@ class Chapters:
     		
     		
     			if (season > last_season or (season == last_season and chapter > last_chapter)) and flag==0:
-    				writeToLog( "New episode: Season: " + str(season) + ". Chapter: " + str(chapter),2)
+    				self.log.write( "New episode: Season: " + str(season) + ". Chapter: " + str(chapter),2)
     				#print "Season " + str(chpp[0]) + " chapter " + chpp[1]
     				
 
@@ -101,7 +87,7 @@ class Chapters:
     			
     				#notify
     				chpstr = show + " S" + str(season).zfill(2) + "E" + str(chapter).zfill(2)
-    				sendNotification("Downloading " + chpstr)
+    				notify("Downloading " + chpstr)
 
     				#subs
     				self.subtitler.addSub([show,season,chapter])

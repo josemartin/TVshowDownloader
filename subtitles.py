@@ -14,34 +14,20 @@ import os
 # Subtitles service 
 import subService
 
-#-------------------------------------------------------------------
-def sendNotification (text):
-    os.system("echo \"" + text + "\" | /usr/bin/sendxmpp -t -u ceoserverpi -o gmail.com jose.martin.burgos")
-#-------------------------------------------------------------------
-def writeToLog (text, level):
-    f = open ("logfile", "a")
-    
-    a=""
-    
-    for i in range(level):
-        a = a + "-"
-    
-    print >> f, a + text
-    print  a + text
-    f.close()
-#-------------------------------------------------------------------
+from Comm import notify
 
 class Subtitles:
     '''
     Handlles the subtitles part of TVshowDownloader
     '''
-    def __init__(self, filename, downloadFolder):
+    def __init__(self, filename, downloadFolder, log):
         '''
         Stores the pending subtitles filename
         '''
         self.filename = filename
         self.downloadFolder = downloadFolder
         self.subpending = []
+        self.log = log
         
     def loadPendingSubs (self):
         '''
@@ -80,7 +66,7 @@ class Subtitles:
     	'''
 
     	for entry in self.subpending:
-			writeToLog( "Looking for sub to " + entry[0] + " " + str(entry[1]).zfill(2) + "x" + str(entry[2]).zfill(2),1)
+			self.log.write( "Looking for sub to " + entry[0] + " S" + str(entry[1]).zfill(2) + "E" + str(entry[2]).zfill(2),1)
 			
 			subSearch = subService.search_subtitles("", "", entry[0],"",str(entry[1]),str(entry[2]),"","","Spanish","","","")
 			
@@ -94,7 +80,7 @@ class Subtitles:
 						flag = 1
 
 				if flag == 1:
-					writeToLog( "Found, removing...",2)
-					sendNotification("Subtitles for " + entry[0] + " S" + str(entry[1]).zfill(2) + "E" + str(entry[2]).zfill(2) + " downloaded")
+					self.log.write( "Found, removing...",2)
+					notify("Subtitles for " + entry[0] + " S" + str(entry[1]).zfill(2) + "E" + str(entry[2]).zfill(2) + " downloaded")
 					self.subpending.remove(entry)
 		
