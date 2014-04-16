@@ -14,6 +14,6 @@ rm logfile
 touch logfile
 rm subpen.txt
 touch subpen.txt
-mv shows.cfg shows.cfg.use
-cp shows.cfg.default shows.cfg
+#mv shows.cfg shows.cfg.use
+#cp shows.cfg.default shows.cfg
 
