@@ -21,11 +21,12 @@ class Chapters:
     '''
     Handlles the chapters part of TVshowDownloader
     '''
-    def __init__(self, showFile, subtitler, log):
+    def __init__(self, showFile, downloadFolder, subtitler, log):
         '''
         Stores the shows file and
         '''
         self.showFile = showFile
+        self.downloadFolder = downloadFolder
         self.configFile = ConfigParser.ConfigParser()
         self.subtitler = subtitler
         self.log = log

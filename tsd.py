@@ -23,7 +23,7 @@ SHOWFILE = "shows.cfg"
 LOGFILE = "tvshowlog.txt"
 SUBFILE = "subpen.txt"
 SUBFOLDER = "/storage/USB/Descargas/Subtitles"
-
+CHPFOLDER = "/storage/USB/Descargas/TVshows"
 
 if __name__ == '__main__':
     # pylint: disable-msg=C0103
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     log.write("Checking for new episodes...", 0)
     
     # Initialize chapterer
-    chapterer = Chapters (SHOWFILE, subtitler, log)
+    chapterer = Chapters (SHOWFILE, CHPFOLDER, subtitler, log)
     chapterer.loadShows()
 
     # Check for new shows
