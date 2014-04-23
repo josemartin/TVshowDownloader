@@ -87,6 +87,8 @@ class Chapters:
                     if not os.path.exists(destDir):
                         os.makedirs(destDir)
 
+                    print "transmission-remote --add \"" + item["link"] + "\" --auth transmission:esteesmiservidortorrent --download-dir " + destDir
+
                     os.system("transmission-remote --add \"" + item["link"] + "\" --auth transmission:esteesmiservidortorrent --download-dir " + destDir)
                 
                     #notify
