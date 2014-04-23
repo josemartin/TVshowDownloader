@@ -70,13 +70,17 @@ class Subtitles:
 			
 			subSearch = subService.search_subtitles("", "", entry[0],"",str(entry[1]),str(entry[2]),"","","Spanish","","","")
 			
+            destDir = os.path.join(self.downloadFolder,entry[0])
+            if not os.path.exists(destDir):
+                os.makedirs(destDir)
+
 			if len(subSearch[0]) > 0:
 				flag = 0
 				for i in range(len(subSearch[0])):
 					tipo = re.compile( "\((.*)\)" ).search( str(subSearch[0][i]["filename"]) ).group( 1 )
 					#print "Tipo: " + tipo
 					if tipo == "ESPAÑA":
-						subService.download_subtitles(subSearch[0],i,None,self.downloadFolder,None,None)
+						subService.download_subtitles(subSearch[0],i,None,destDir,None,None)
 						flag = 1
 
 				if flag == 1:

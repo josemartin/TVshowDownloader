@@ -11,9 +11,8 @@
 rm *~
 rm *.pyc
 rm logfile
-touch logfile
+rm tvshowlog.txt
 rm subpen.txt
-touch subpen.txt
 #mv shows.cfg shows.cfg.use
 #cp shows.cfg.default shows.cfg
 
