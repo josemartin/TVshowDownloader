@@ -38,21 +38,21 @@ class Subtitles:
         if os.path.isfile(self.filename):
             subfile = open(self.filename)
             while True:
-    			line = subfile.readline()
-    			if not line:
-    				break
-    				
-    			parts = line.split(',')
-    			self.subpending.append([parts[0], int(parts[1]), int(parts[2])])
+                line = subfile.readline()
+                if not line:
+                    break
+                    
+                parts = line.split(',')
+                self.subpending.append([parts[0], int(parts[1]), int(parts[2])])
             subfile.close()
     def writePendingSubs (self):
-    	'''
-    	Writes the pending sub to the supplied filename.
-    	See loadPendingSubs() for file syntax
-    	'''
-    	subfileo = open(self.filename,"w")
+        '''
+        Writes the pending sub to the supplied filename.
+        See loadPendingSubs() for file syntax
+        '''
+        subfileo = open(self.filename,"w")
         for entry in self.subpending:
-			print >> subfileo, entry[0] + "," + str(entry[1]) + "," + str(entry[2])
+            print >> subfileo, entry[0] + "," + str(entry[1]) + "," + str(entry[2])
         subfileo.close()
     def addSub(self, entry):
         '''
@@ -61,30 +61,30 @@ class Subtitles:
         self.subpending.append (entry)
 
     def checkSubtitles (self):
-    	'''
+        '''
 
-    	'''
+        '''
 
-    	for entry in self.subpending:
-			self.log.write( "Looking for sub to " + entry[0] + " S" + str(entry[1]).zfill(2) + "E" + str(entry[2]).zfill(2),1)
-			
-			subSearch = subService.search_subtitles("", "", entry[0],"",str(entry[1]),str(entry[2]),"","","Spanish","","","")
-			
+        for entry in self.subpending:
+            self.log.write( "Looking for sub to " + entry[0] + " S" + str(entry[1]).zfill(2) + "E" + str(entry[2]).zfill(2),1)
+            
+            subSearch = subService.search_subtitles("", "", entry[0],"",str(entry[1]),str(entry[2]),"","","Spanish","","","")
+            
             destDir = os.path.join(self.downloadFolder,entry[0])
             if not os.path.exists(destDir):
                 os.makedirs(destDir)
 
-			if len(subSearch[0]) > 0:
-				flag = 0
-				for i in range(len(subSearch[0])):
-					tipo = re.compile( "\((.*)\)" ).search( str(subSearch[0][i]["filename"]) ).group( 1 )
-					#print "Tipo: " + tipo
-					if tipo == "ESPAÑA":
-						subService.download_subtitles(subSearch[0],i,None,destDir,None,None)
-						flag = 1
+            if len(subSearch[0]) > 0:
+                flag = 0
+                for i in range(len(subSearch[0])):
+                    tipo = re.compile( "\((.*)\)" ).search( str(subSearch[0][i]["filename"]) ).group( 1 )
+                    #print "Tipo: " + tipo
+                    if tipo == "ESPAÑA":
+                        subService.download_subtitles(subSearch[0],i,None,destDir,None,None)
+                        flag = 1
 
-				if flag == 1:
-					self.log.write( "Found, removing...",2)
-					notify("Subtitles for " + entry[0] + " S" + str(entry[1]).zfill(2) + "E" + str(entry[2]).zfill(2) + " downloaded")
-					self.subpending.remove(entry)
-		
+                if flag == 1:
+                    self.log.write( "Found, removing...",2)
+                    notify("Subtitles for " + entry[0] + " S" + str(entry[1]).zfill(2) + "E" + str(entry[2]).zfill(2) + " downloaded")
+                    self.subpending.remove(entry)
+        
